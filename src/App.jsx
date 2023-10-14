@@ -13,7 +13,7 @@ const createDateString = (date) => {
   const day = date.getDate().toString().padStart(2, "0");
 
   // Concatenate the components to create the desired string
-  const dateString = [year, month, day].join("/");
+  const dateString = [year, month, day].join("-");
 
   return dateString;
 };
