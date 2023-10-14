@@ -70,6 +70,7 @@ function App() {
   const createPage = useCallback(
     (e) => {
       e.preventDefault();
+      setText("");
       window.open(newPagePath, "_blank");
     },
     [newPagePath]
@@ -108,29 +109,25 @@ function App() {
       </h1>
       <div className="card">
         <form onSubmit={createPage}>
+          <label className="right">
+            <input
+              type="text"
+              name="title"
+              placeholder={dateString}
+              value={title}
+              onInput={(e) => setTitle(e.target.value)}
+            />
+          </label>
           <textarea
             value={text}
             name="body"
+            placeholder="..."
             onChange={(e) => setText(e.target.value)}
             autoFocus={true}
           />
-          <div className="between">
-            <div>
-              <label>
-                To
-                <input
-                  type="text"
-                  name="title"
-                  placeholder={dateString}
-                  value={title}
-                  onInput={setTitle}
-                />
-              </label>
-            </div>
-            <button type="submit" onClick={createPage}>
-              Create
-            </button>
-          </div>
+          <button type="submit" className="wide" onClick={createPage}>
+            Post
+          </button>
         </form>
       </div>
       <div className="card">

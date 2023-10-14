@@ -27,6 +27,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
+  min-height: 100svh;
 }
 
 h1 {
@@ -66,6 +67,7 @@ button:focus-visible {
   }
 }
 
+input,
 textarea {
   box-sizing: border-box;
 }
