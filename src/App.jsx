@@ -28,7 +28,10 @@ function App() {
 
   const dateString = useMemo(() => createDateString(now), [now]);
   const timeString = useMemo(
-    () => now.toLocaleTimeString().slice(0, -3),
+    () =>
+      now
+        .toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })
+        .slice(0, 5),
     [now]
   );
 
@@ -125,7 +128,7 @@ function App() {
               </label>
             </div>
             <button type="submit" onClick={createPage}>
-              Create page
+              Create
             </button>
           </div>
         </form>
