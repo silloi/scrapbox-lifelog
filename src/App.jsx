@@ -57,7 +57,7 @@ function App() {
       [
         SCRAPBOX_ROOT,
         projectId,
-        (title ? encodeURIComponent(title) : dateString) +
+        encodeURIComponent(title || dateString) +
           "?body=" +
           encodeURIComponent(body),
       ].join("/"),
