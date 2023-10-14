@@ -70,8 +70,8 @@ function App() {
   const createPage = useCallback(
     (e) => {
       e.preventDefault();
-      setText("");
       window.open(newPagePath, "_blank");
+      location.href = "/";
     },
     [newPagePath]
   );
