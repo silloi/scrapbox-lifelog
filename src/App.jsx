@@ -49,12 +49,17 @@ function App() {
     // "Quoted text."
     //
     // https://example.com
-    if (shareText.includes('"\n\n')) {
+    if (shareText.includes("%0A%0A")) {
       // > "Quoted text."
       // > Share Title
-      // > https://example.com
-      const [quoteText, linkUrl] = shareText.split("\n\n");
-      const linkUrlPath = linkUrl.split("#:~:text=")[0];
+      // > https://example.com#:~:text=Quoted%20text.
+      if (shareText.split("%0A%0A").length > 2) {
+        throw new Error("Quoting multiple lines is not supported.");
+      }
+      const [quoteText, linkUrl] = shareText.split("%0A%0A");
+      const linkUrlPath = linkUrl.includes("#:~:text=")
+        ? linkUrl.split("#:~:text=")[0]
+        : linkUrl;
       const linkLinesArray = [quoteText, titleText, linkUrlPath];
       return linkLinesArray.map((linkLine) => `> ${linkLine}`).join("\n");
     } else {
