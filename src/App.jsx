@@ -42,21 +42,21 @@ function App() {
   }, []);
 
   const linkLines = useMemo(() => {
-    const shareText = urlParams.get("text");
-    const titleText = urlParams.get("title");
+    const shareText = decodeURIComponent(urlParams.get("text") ?? "");
+    const titleText = decodeURIComponent(urlParams.get("title") ?? "");
 
     if (!shareText || !titleText) return;
     // "Quoted text."
     //
     // https://example.com
-    if (shareText.includes("%0A%0A")) {
+    if (shareText.includes("\n\n")) {
       // > "Quoted text."
       // > Share Title
       // > https://example.com#:~:text=Quoted%20text.
-      if (shareText.split("%0A%0A").length > 2) {
+      if (shareText.split("\n\n").length > 2) {
         throw new Error("Quoting multiple lines is not supported.");
       }
-      const [quoteText, linkUrl] = shareText.split("%0A%0A");
+      const [quoteText, linkUrl] = shareText.split("\n\n");
       const linkUrlPath = linkUrl.includes("#:~:text=")
         ? linkUrl.split("#:~:text=")[0]
         : linkUrl;
