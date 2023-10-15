@@ -41,19 +41,36 @@ function App() {
     return params;
   }, []);
 
-  const linkLiteral = useMemo(() => {
-    if (urlParams.get("text") && urlParams.get("title")) {
-      return `[${urlParams.get("text")} ${urlParams.get("title")}]`;
+  const linkLines = useMemo(() => {
+    const shareText = urlParams.get("text");
+    const titleText = urlParams.get("title");
+
+    if (!shareText || !titleText) return;
+    // "Quoted text."
+    //
+    // https://example.com
+    if (shareText.includes('"\n\n')) {
+      // > "Quoted text."
+      // > Share Title
+      // > https://example.com
+      const [quoteText, linkUrl] = shareText.split("\n\n");
+      const linkUrlPath = linkUrl.split("#:~:text=")[0];
+      const linkLinesArray = [quoteText, titleText, linkUrlPath];
+      return linkLinesArray.map((linkLine) => `> ${linkLine}`).join("\n");
+    } else {
+      // > Share Title
+      // > https://example.com
+      const linkLinesArray = [titleText, shareText];
+      return linkLinesArray.map((linkLine) => `> ${linkLine}`).join("\n");
     }
   }, [urlParams]);
 
   const body = useMemo(() => {
     const textLines = text.split("\n");
-    const maybeLinkLiteral = linkLiteral ? [linkLiteral] : [];
-    const bodyLines = [timeString, ...maybeLinkLiteral, ...textLines];
-    const quoteLines = bodyLines.map((line) => "> " + line);
-    return quoteLines.join("\n");
-  }, [linkLiteral, text, timeString]);
+    const maybeLinkLines = linkLines ? [linkLines] : [];
+    const bodyLines = [timeString, ...maybeLinkLines, ...textLines];
+    return bodyLines.join("\n");
+  }, [linkLines, text, timeString]);
 
   const newPagePath = useMemo(
     () =>
@@ -101,7 +118,7 @@ function App() {
   return (
     <>
       <h1>
-        {linkLiteral ? (
+        {linkLines ? (
           <a href={urlParams.get("text")}>{urlParams.get("title")}</a>
         ) : (
           "Scrapbox Lifelog"
@@ -121,7 +138,6 @@ function App() {
           <textarea
             value={text}
             name="body"
-            placeholder="..."
             onChange={(e) => setText(e.target.value)}
             autoFocus={true}
           />
