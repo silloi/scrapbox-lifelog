@@ -46,21 +46,26 @@ function App() {
     const titleText = decodeURIComponent(urlParams.get("title") ?? "");
 
     if (!shareText || !titleText) return;
+
+    const quoteRegExp = new RegExp(/".*?"/);
+    const quoteMatches = quoteRegExp.exec(shareText);
     // "Quoted text."
     //
     // https://example.com
-    if (shareText.includes("\n\n")) {
+    if (quoteMatches) {
       // > "Quoted text."
       // > Share Title
       // > https://example.com#:~:text=Quoted%20text.
-      if (shareText.split("\n\n").length > 2) {
-        throw new Error("Quoting multiple lines is not supported.");
-      }
-      const [quoteText, linkUrl] = shareText.split("\n\n");
-      const linkUrlPath = linkUrl.includes("#:~:text=")
+      const quoteText = quoteMatches[0];
+      const linkUrl = shareText.split("https://")[1];
+      const linkPath = linkUrl.includes("#:~:text=")
         ? linkUrl.split("#:~:text=")[0]
         : linkUrl;
-      const linkLinesArray = [quoteText, titleText, linkUrlPath];
+      const linkLinesArray = [
+        `"${quoteText}`,
+        titleText,
+        `https://${linkPath}`,
+      ];
       return linkLinesArray.map((linkLine) => `> ${linkLine}`).join("\n");
     } else {
       // > Share Title
