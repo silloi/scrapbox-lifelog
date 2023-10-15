@@ -61,11 +61,7 @@ function App() {
       const linkPath = linkUrl.includes("#:~:text=")
         ? linkUrl.split("#:~:text=")[0]
         : linkUrl;
-      const linkLinesArray = [
-        `"${quoteText}`,
-        titleText,
-        `https://${linkPath}`,
-      ];
+      const linkLinesArray = [`${quoteText}`, titleText, `https://${linkPath}`];
       return linkLinesArray.map((linkLine) => `> ${linkLine}`).join("\n");
     } else {
       // > Share Title
@@ -98,7 +94,7 @@ function App() {
     (e) => {
       e.preventDefault();
       window.open(newPagePath, "_blank");
-      location.href = "/";
+      location.replace("/");
     },
     [newPagePath]
   );
