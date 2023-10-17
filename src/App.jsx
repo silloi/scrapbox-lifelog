@@ -20,6 +20,7 @@ const createDateString = (date) => {
 
 function App() {
   const dialogRef = useRef();
+  const inputTextRef = useRef();
 
   const [projectId, setProjectId] = useState(localStorage.getItem("projectId"));
   const [now, setNow] = useState(new Date());
@@ -121,6 +122,13 @@ function App() {
     }
   }, [projectId]);
 
+  useEffect(() => {
+    if (inputTextRef.current) {
+      inputTextRef.current.focus();
+      inputTextRef.current.click();
+    }
+  }, []);
+
   return (
     <>
       <h1>
@@ -163,10 +171,10 @@ function App() {
             type="text"
             name="project-id"
             placeholder="project-id"
+            ref={inputTextRef}
             value={projectId}
             onInput={updateProjectId}
             required={true}
-            autoFocus={true}
           />
         </p>
         <p>
