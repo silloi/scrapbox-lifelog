@@ -57,17 +57,21 @@ function App() {
       // > Share Title
       // > https://example.com#:~:text=Quoted%20text.
       const quoteText = quoteMatches[0];
-      const linkUrl = shareText.split("https://")[1];
+      const [linkProtocol, linkUrl] = shareText.split("://");
       const linkPath = linkUrl.includes("#:~:text=")
         ? linkUrl.split("#:~:text=")[0]
         : linkUrl;
-      const linkLinesArray = [`${quoteText}`, titleText, `https://${linkPath}`];
-      return linkLinesArray.map((linkLine) => `> ${linkLine}`).join("\n");
+      const linkLinesArray = [
+        `${quoteText}`,
+        titleText,
+        `${linkProtocol}://${linkPath}`,
+      ];
+      return linkLinesArray.join("\n");
     } else {
       // > Share Title
       // > https://example.com
       const linkLinesArray = [titleText, shareText];
-      return linkLinesArray.map((linkLine) => `> ${linkLine}`).join("\n");
+      return linkLinesArray.join("\n");
     }
   }, [urlParams]);
 
