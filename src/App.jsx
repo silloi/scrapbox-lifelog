@@ -73,7 +73,8 @@ function App() {
   }, [urlParams]);
 
   const body = useMemo(() => {
-    const textLines = text.split("\n");
+    const textLines = text ? text.split("\n") : [];
+    console.log("texstLines", textLines);
     const maybeLinkLines = linkLines ? [linkLines] : [];
     const bodyLines = [timeString, ...maybeLinkLines, ...textLines];
     return bodyLines.join("\n");
